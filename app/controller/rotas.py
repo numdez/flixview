@@ -150,7 +150,7 @@ def add_usuario():
     if form.validate_on_submit():
         senha_usuario = Usuario.create_password(form.senha_usuario.data)
         proc = """
-            INSERT INTO tbl_undb_usuarios (nome_usuario, email_usuario, senha_usuario, tipo_usuario)
+            INSERT INTO tbl_undb_usuarios (nome, email, senha, tipo)
             VALUES"""
         args = (form.nome_usuario.data, form.email_usuario.data, senha_usuario, form.tipo_usuario.data)
         functions.run_blank_query(proc, args)
