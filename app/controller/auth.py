@@ -20,7 +20,7 @@ class Auth():
     
     @classmethod
     def get_totp_uri(self, name):
-        data = self._totp.provisioning_uri(name=name, issuer_name='Atendimentos')
+        data = self._totp.provisioning_uri(name=name, issuer_name='FlixView')
         return data
     
     @classmethod

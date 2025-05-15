@@ -18,16 +18,16 @@ class ModelUser():
         try:
             cursor = db._conn.cursor()
             sql = (
-                f"SELECT * FROM tbl_undb_usuarios WHERE email_usuario = '{user.email}'")
+                f"SELECT * FROM tbl_undb_usuarios WHERE email = '{user.email}'")
             row = cursor.execute(sql).fetchone()
             if row != None:
                 usuario = pd.DataFrame(
                     [row], 
-                    columns=['id_usuario', 'nome_usuario', 'email_usuario', 'senha_usuario', 'ult_data_login', 'tipo_usuario', 'assinatura']
+                    columns=['id', 'nome', 'email', 'senha', 'ult_data_login', 'tipo', 'assinatura']
                 )
-                if Usuario.verify_password(usuario['senha_usuario'][0], user.senha):
-                    usuario = Usuario(usuario['id_usuario'][0], usuario['email_usuario'][0], usuario['senha_usuario'][0], 
-                            usuario['nome_usuario'][0], usuario['tipo_usuario'][0], usuario['ult_data_login'][0])
+                if Usuario.verify_password(usuario['senha'][0], user.senha):
+                    usuario = Usuario(usuario['id'][0], usuario['email'][0], usuario['senha'][0], 
+                            usuario['nome'][0], usuario['tipo'][0], usuario['ult_data_login'][0])
                 else:
                     usuario = 'Senha ou email inválido(s)!'
                 db._conn.close()
@@ -43,15 +43,15 @@ class ModelUser():
         try:
             cursor = db._conn.cursor()
             sql = (
-                f"SELECT * FROM tbl_undb_usuarios WHERE email_usuario = '{email}'")
+                f"SELECT * FROM tbl_undb_usuarios WHERE email = '{email}'")
             row = cursor.execute(sql).fetchone()
             if row != None:
                 user = pd.DataFrame(
                     [row], 
-                    columns=['id_usuario', 'nome_usuario', 'email_usuario', 'senha_usuario', 'ult_data_login', 'tipo_usuario', 'assinatura']
+                    columns=['id', 'nome', 'email', 'senha', 'ult_data_login', 'tipo', 'assinatura']
                 )
-                user = Usuario(user['id_usuario'][0], user['email_usuario'][0], user['senha_usuario'][0], 
-                            user['nome_usuario'][0], user['tipo_usuario'][0], user['ult_data_login'][0])
+                user = Usuario(user['id'][0], user['email'][0], user['senha'][0], 
+                            user['nome'][0], user['tipo'][0], user['ult_data_login'][0])
                 db._conn.close()
                 return user
             else:
@@ -65,17 +65,17 @@ class ModelUser():
     def get_by_id(self, db_loader, id):
         cursor = db_loader._conn.cursor()
         sql = (
-            f'SELECT * FROM tbl_undb_usuarios WHERE id_usuario={id}'
+            f'SELECT * FROM tbl_undb_usuarios WHERE id={id}'
         )
         
         row = cursor.execute(sql).fetchone()
         if row != None:
             logged_user = pd.DataFrame(
                     [row], 
-                    columns=['id_usuario', 'nome_usuario', 'email_usuario', 'senha_usuario', 'ult_data_login', 'tipo_usuario', 'assinatura']
+                    columns=['id', 'nome', 'email', 'senha', 'ult_data_login', 'tipo', 'assinatura']
                 )
-            logged_user = Usuario(logged_user['id_usuario'][0], logged_user['email_usuario'][0], logged_user['senha_usuario'][0], 
-                            logged_user['nome_usuario'][0], logged_user['tipo_usuario'][0], logged_user['ult_data_login'][0])
+            logged_user = Usuario(logged_user['id'][0], logged_user['email'][0], logged_user['senha'][0], 
+                            logged_user['nome'][0], logged_user['tipo'][0], logged_user['ult_data_login'][0])
             return logged_user
         else:
             return None
@@ -85,7 +85,7 @@ class ModelUser():
         try:
             cursor = db._conn.cursor()
             sql = (
-                f"INSERT INTO tbl_undb_usuarios (nome_usuario, email_usuario, senha_usuario, tipo_usuario, assinatura) "
+                f"INSERT INTO tbl_undb_usuarios (nome, email, senha, tipo, assinatura) "
                 f"VALUES ('{user.nome}', '{user.email}', '{user.senha}', '{user.tipo}', '{user.assinatura}')"
             )
             cursor.execute(sql)
@@ -101,7 +101,7 @@ class ModelUser():
             cursor = db._conn.cursor()
             sql = "SELECT * FROM tbl_undb_usuarios"
             rows = cursor.execute(sql).fetchall()
-            usuarios = pd.DataFrame(rows, columns=['id_usuario', 'nome_usuario', 'email_usuario', 'senha_usuario', 'ult_data_login', 'tipo_usuario', 'assinatura'])
+            usuarios = pd.DataFrame(rows, columns=['id', 'nome', 'email', 'senha', 'ult_data_login', 'tipo', 'assinatura'])
             db._conn.close()
             return usuarios
         except Exception as ex:
@@ -113,12 +113,12 @@ class ModelUser():
             cursor = db._conn.cursor()
             sql = (
                 f"UPDATE tbl_undb_usuarios SET "
-                f"nome_usuario = '{user.nome}', "
-                f"email_usuario = '{user.email}', "
-                f"senha_usuario = '{user.senha}', "
-                f"tipo_usuario = '{user.tipo}', "
+                f"nome = '{user.nome}', "
+                f"email = '{user.email}', "
+                f"senha = '{user.senha}', "
+                f"tipo = '{user.tipo}', "
                 f"assinatura = '{user.assinatura}' "
-                f"WHERE id_usuario = {user.id}"
+                f"WHERE id = {user.id}"
             )
             cursor.execute(sql)
             db._conn.commit()
@@ -131,7 +131,7 @@ class ModelUser():
     def delete(self, db, id):
         try:
             cursor = db._conn.cursor()
-            sql = f"DELETE FROM tbl_undb_usuarios WHERE id_usuario = {id}"
+            sql = f"DELETE FROM tbl_undb_usuarios WHERE id = {id}"
             cursor.execute(sql)
             db._conn.commit()
             db._conn.close()
