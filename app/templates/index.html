@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Filmes</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="bg-dark-600 text-white">
+
+  {% include 'navbar.html' %}
+  {% include 'hero.html' %}
+
+  <div class="carousels">
+    <h2>Em Alta</h2>
+    <div class="carousel">
+      {% for movie in trending_movies %}
+        <div class="movie-card">
+          <img src="{{ movie.posterUrl }}" alt="{{ movie.title }}">
+          <p>{{ movie.title }} ({{ movie.year }}) - ⭐ {{ movie.rating }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <h2>Recentemente Adicionados</h2>
+    <div class="carousel">
+      {% for movie in recent_movies %}
+        <div class="movie-card">
+          <img src="{{ movie.posterUrl }}" alt="{{ movie.title }}">
+          <p>{{ movie.title }} ({{ movie.year }}) - ⭐ {{ movie.rating }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <h2>Mais Bem Avaliados</h2>
+    <div class="carousel">
+      {% for movie in top_rated_movies %}
+        <div class="movie-card">
+          <img src="{{ movie.posterUrl }}" alt="{{ movie.title }}">
+          <p>{{ movie.title }} ({{ movie.year }}) - ⭐ {{ movie.rating }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</body>
+</html>

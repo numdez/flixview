@@ -1,0 +1,110 @@
+.navbar {
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 20;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.favorites-btn {
+  position: relative;
+  font-size: 1.3rem;
+  color: #ddd;
+  text-decoration: none;
+}
+
+.favorites-btn:hover {
+  color: white;
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.4rem;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: white;
+  display: none;
+  cursor: pointer;
+}
+
+.nav-menu {
+  display: none;
+}
+
+.nav-menu.open {
+  display: block;
+}
+
+.nav-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-menu li {
+  margin: 0.5rem 0;
+}
+
+.nav-menu a {
+  text-decoration: none;
+  color: #ccc;
+  padding: 0.5rem 1rem;
+  display: block;
+}
+
+.nav-menu a:hover {
+  color: white;
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+  .menu-btn {
+    display: none;
+  }
+
+  .nav-menu {
+    display: block !important;
+  }
+
+  .nav-menu ul {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .nav-menu li {
+    margin: 0;
+  }
+}

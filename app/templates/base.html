@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script>
+        function toggleNavbar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('collapsed');
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const button = document.getElementById('colorButton');
+
+            button.addEventListener('active', () => {
+                // Alterna a classe 'clicked' no botão
+                button.classList.toggle('active');
+            });
+        });
+    </script>
+    <title>{% block title %}Sistema de Atendimento{% endblock %}</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" 
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <!-- CSS Customizado -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <!-- Bloco para CSS específico de cada página -->
+    <style>
+        body::before {
+            content: "";
+            background-image: url("../static/resources/background.png");
+            background-size: cover;      /* Ajusta a imagem para cobrir a tela */
+            background-position: center; /* Centraliza a imagem */
+            background-repeat: no-repeat;
+            position: fixed;             /* Fixa a imagem em relação à viewport */
+            top: 0;
+            left: 0;
+            width: 100vw;                /* Cobre toda a largura da viewport */
+            height: 100vh;               /* Cobre toda a altura da viewport */
+            z-index: -1;                 /* Mantém a imagem atrás de outros elementos */
+        }
+        #logo-here{
+            width: auto;
+            height: 6vh;
+        }
+
+        .bg-dark {
+            background-color: #563874 !important;
+        }
+        
+        main .card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-inline: 2vw;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Cartões principais */
+        main .cards {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+            gap: 20px;
+        }
+
+        main .card img {
+            width: 30%;
+            margin-bottom: 30px;
+            margin-top: 20px;
+            margin-inline: auto;
+        }
+
+        main .card h2 {
+            color: #6d4ab3;
+            margin-bottom: 10px;
+        }
+
+        main .card p {
+            color: #666;
+        }
+
+        a.fill-div {
+            display: block;
+            height: 100%;
+            width: 100%;
+            text-decoration: none;
+        }
+    </style>
+    {% block styles %}
+    <style>
+        main .card {
+            text-align: center;
+            width: 20vw;
+        }
+    </style>
+    
+    {% endblock %}
+</head>
+<body onload="carregaLogo()">
+    <body class="bg-light">
+
+        <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-2 shadow">
+            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="{{ url_for('home') }}"><img
+                    style="height: auto; max-width: 40%;"
+                    id="logo-here"
+                    alt="Main pi logo cmyk blue 140px"></a>
+            <div class="navbar-nav">
+    
+                <div class="d-flex">
+                    <span class="navbar-brand p-1 fs-6">{{current_user.nome}}</span>
+                    <a class="btn btn-outline-light" href="{{ url_for('logout') }}">Sair</a>
+                </div>
+            </div>
+        </header>
+    
+        <div class="container-fluid">
+            <div class="d-flex row">
+                <nav id="sidebar" class="sidebar border-end collapsed"
+                    style="border-right: 1px solid #333; background-color: white;">
+                    <div class="position-sticky pt-3">
+                        <div class="nav flex-column nav-pills ali" id="v-pills-tab" role="tablist" style="height: 850px;"
+                            aria-orientation="vertical">
+                            <button class="nav-link text-start text-dark fw-bold toggle-btn" onclick="toggleNavbar()"><i
+                                    class="bi bi-justify"></i></button>
+                            {% block navbar %}
+                            <button class="nav-link active text-start text-dark fw-bold nav-button"
+                                id="v-pills-home-tab colorButton" data-bs-toggle="pill" data-bs-target="#v-pills-home"
+                                type="button" role="tab" onclick="redireciona('home');" aria-controls="v-pills-home" aria-selected="true" title="Home"><i
+                                class="bi bi-house"></i> <span class="nav-text">Home</span></button>
+                            <button class="nav-link text-start text-dark fw-bold nav-button" id="v-pills-contas-tab colorButton"
+                                data-bs-toggle="pill" data-bs-target="#v-pills-meus-dados" type="button" role="tab"
+                                aria-controls="v-pills-meus-dados" onclick="redireciona('meusDados')" aria-selected="false" title="Meus Dados"><i class="bi bi-person"></i><span
+                                    class="nav-text">Meus Dados</span></button>
+                            <button class="nav-link text-start text-dark fw-bold nav-button" id="v-pills-opt-tab colorButton"
+                                data-bs-toggle="pill" data-bs-target="#v-pills-opt" type="button" role="tab" onclick="redireciona('all_chamados')"
+                                aria-controls="v-pills-opt" aria-selected="false" title="Chamados"><i class="bi bi-list-task"></i>
+                                <span class="nav-text">Chamados</span></button>  
+                                {% if current_user.tipo == 'Administrador' %}
+                                <button class="nav-link text-start text-start text-dark fw-bold nav-button" id="v-pills-adm-tab colorButton"
+                                    data-bs-toggle="pill" data-bs-target="#v-pills-adm" type="button" role="tab" onclick="redireciona('admin')"
+                                    aria-controls="v-pills-adm" aria-selected="false" title="Administrador"><i class="bi bi-person-lock"></i>
+                                    <span class="nav-text">Administrador</span></button>
+                                {% endif %}
+                            {% endblock %}
+                        </div>
+                    </div>
+                </nav>
+            <main class="col-md-12 bg-here">
+                <div class="tab-content" id="v-pills-tabContent">
+                    {% block content %}
+                    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+                        aria-labelledby="v-pills-home-tab" tabindex="0">
+                        <section class="cards">
+                            <div class="card" onclick="location.href='meusdados';" style="cursor: pointer;">
+                                <img src="../static/resources/aluno.png" alt="Icone Aluno">
+                                <h2>Meus Dados</h2>
+                                <p>Atualizar informações de endereço e contato de forma simples e rápida.</p>
+                            </div>
+                            <div class="card" onclick="location.href='view/chamados';" style="cursor: pointer;">
+                                <img src="../static/resources/atendimento.png" alt="Icone Atendimento">
+                                <h2>ATENDIMENTO</h2>
+                                <p>Iniciar um atendimento para tirar dúvidas sobre o aluno(a), a escola e a metodologia.</p>
+                            </div>
+                            <!--
+                            <div class="card">
+                                <img src="../static/resources/documentos.png" alt="Icone Documentos">
+                                <h2>DOCUMENTOS</h2>
+                                <p>Visualizar documentos que foram realizados, documentos pendentes e não finalizados.</p>
+                            </div>
+                            -->
+                        </section>
+                    </div>
+                    {% endblock %}
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    {% block footer %}
+    <footer class="footer">
+        <div class="text-center text-light p-2" style="background-color: #563874;">
+            © Todos os direitos reservados
+        </div>
+    </footer>
+    {% endblock %}
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" 
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" 
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" 
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" 
+        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" 
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
+        integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
+        integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha"
+        crossorigin="anonymous"></script>
+
+
+    <!-- Bloco para scripts específicos de cada página -->
+     <script>
+        function redireciona(aba){
+            switch(aba){
+                case 'home':
+                    window.location.replace("{{ url_for('home') }}");
+                    break;
+                case 'meusDados':
+                    window.location.replace("{{ url_for('base_dados') }}");
+                    break;
+                case 'all_chamados':
+                    window.location.replace("{{ url_for('all_chamados') }}");
+                    break;
+                case 'admin':
+                    window.location.replace("{{ url_for('all_usuarios') }}");
+                    break;
+            }
+            
+        }
+
+        function carregaLogo(){
+            imgObj = document.getElementById("logo-here");
+            imgObj.src = '/static/resources/db_logo_light.png';
+        }
+     </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
